@@ -13,6 +13,8 @@ interface Props {
   /** The currently visible (filtered/sorted) rows - what-you-see-is-what-you-print. */
   rows: Expense[];
   includeItems: boolean;
+  /** How the itemized section is laid out: a flat date-sorted list, or grouped under each member. */
+  groupBy: "items" | "members";
   isFiltered: boolean;
   filter: ExpenseFilter;
 }
@@ -36,7 +38,15 @@ function filterSummary(data: AppData, filter: ExpenseFilter): string {
  * hides the app) when printing. The browser print dialog covers both real
  * printing and "Save as PDF".
  */
-export function ReceiptDocument({ data, monthKey, rows, includeItems, isFiltered, filter }: Props) {
+export function ReceiptDocument({
+  data,
+  monthKey,
+  rows,
+  includeItems,
+  groupBy,
+  isFiltered,
+  filter,
+}: Props) {
   const total = sumAmounts(rows.map((r) => r.amount));
   const cats = categoryBreakdown(data, rows);
   const members = memberBreakdown(data, rows);
@@ -100,7 +110,7 @@ export function ReceiptDocument({ data, monthKey, rows, includeItems, isFiltered
           </div>
         ))}
 
-        {includeItems && rows.length > 0 && (
+        {includeItems && rows.length > 0 && groupBy === "items" && (
           <>
             <div className="rcpt-rule-dashed" />
             <div className="rcpt-section-title">ITEMS</div>
@@ -124,6 +134,61 @@ export function ReceiptDocument({ data, monthKey, rows, includeItems, isFiltered
                   </div>
                 </div>
               ))}
+          </>
+        )}
+
+        {includeItems && rows.length > 0 && groupBy === "members" && (
+          <>
+            <div className="rcpt-rule-dashed" />
+            <div className="rcpt-section-title">ITEMS BY MEMBER</div>
+            {data.members
+              .map((member) => {
+                // Every row this member has a share in (their own items + any
+                // split they're part of), with the amount attributed to them.
+                const items = [...rows]
+                  .sort((a, b) => a.date.localeCompare(b.date))
+                  .map((e) => {
+                    const share = memberShares(e).find((s) => s.memberId === member.id);
+                    return share ? { e, share: share.amount } : null;
+                  })
+                  .filter((x): x is { e: Expense; share: number } => x !== null);
+                return { member, items };
+              })
+              .filter((g) => g.items.length > 0)
+              .map(({ member, items }) => {
+                const memberTotal = sumAmounts(items.map((it) => it.share));
+                return (
+                  <div className="rcpt-group" key={member.id}>
+                    <div className="rcpt-line rcpt-group-head">
+                      <span className="rcpt-line-name">{member.name}</span>
+                      <span className="rcpt-dots" />
+                      <span className="rcpt-line-amt">{formatMoney(memberTotal)}</span>
+                    </div>
+                    {items.map(({ e, share }) => {
+                      const split = isSplit(e);
+                      // Number of members this item is shared across.
+                      const splitCount = memberShares(e).length;
+                      return (
+                        <div className="rcpt-item" key={e.id}>
+                          <div className="rcpt-line">
+                            <span className="rcpt-line-name">
+                              {e.description}
+                              {split ? ` (split[${splitCount}])` : ""}
+                            </span>
+                            <span className="rcpt-dots" />
+                            <span className="rcpt-line-amt">{formatMoney(share)}</span>
+                          </div>
+                          <div className="rcpt-item-sub">
+                            {formatDayLabel(e.date)} · {categoryName.get(e.categoryId) ?? ""}
+                            {split ? ` · split[${splitCount}] · full ${formatMoney(e.amount)}` : ""}
+                            {e.notes ? ` · ${e.notes}` : ""}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
           </>
         )}
 

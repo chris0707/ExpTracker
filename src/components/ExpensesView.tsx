@@ -15,6 +15,7 @@ export function ExpensesView() {
   const { data, copyMonthInto, keepMigratedInMonth, discardMigratedInMonth } = useAppData();
   const [monthKey, setMonthKey] = useState(currentMonthKey());
   const [includeItems, setIncludeItems] = useState(true);
+  const [groupBy, setGroupBy] = useState<"items" | "members">("items");
   const [copyMsg, setCopyMsg] = useState<string | null>(null);
   const [showExportNudge, setShowExportNudge] = useState(false);
 
@@ -118,6 +119,20 @@ export function ExpensesView() {
             />
             Itemized
           </label>
+          {includeItems && (
+            <label className="print-groupby">
+              Group by
+              <select
+                className="entry-select print-groupby-select"
+                value={groupBy}
+                onChange={(e) => setGroupBy(e.target.value as "items" | "members")}
+                aria-label="Group printed items by"
+              >
+                <option value="items">Items</option>
+                <option value="members">Members</option>
+              </select>
+            </label>
+          )}
           <button
             className="btn btn-secondary"
             onClick={() => window.print()}
@@ -176,6 +191,7 @@ export function ExpensesView() {
         monthKey={monthKey}
         rows={view.rows}
         includeItems={includeItems}
+        groupBy={groupBy}
         isFiltered={view.isFiltered}
         filter={view.filter}
       />
