@@ -14,8 +14,10 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 export default defineConfig(({ mode }) => {
   const portable = mode === "portable";
   return {
-    // Relative asset URLs so the file works when opened directly (file://).
-    base: portable ? "./" : "/",
+    // Relative asset URLs. Portable mode needs them for file:// opening; the
+    // standard build needs them too so the app works when served from a
+    // GitHub Pages project subpath (https://user.github.io/ExpTracker/).
+    base: "./",
     plugins: [react(), ...(portable ? [viteSingleFile()] : [])],
     build: portable ? { outDir: "dist-portable" } : {},
     server: {
