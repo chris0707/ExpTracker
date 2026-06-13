@@ -1,0 +1,29 @@
+# Release Notes
+
+## v1.1.0 — Printable receipt (2026-06-11)
+
+1. **Print / Save-as-PDF receipt** — new "🧾 Print / Save PDF" button opens the browser's native print dialog (print on paper or choose "Save as PDF"); no extra dependencies.
+2. **Modern receipt layout** — thermal-receipt style (monospace, 80mm width, dashed dividers, dotted leaders, faux barcode): header, month, print timestamp, category and member breakdowns with %, and a bold grand total.
+3. **Itemized toggle** — an "Itemized" checkbox includes/excludes the full line-item list, giving both a summary-only and a summary + itemized receipt.
+4. **What-you-see-is-what-you-print** — the receipt reflects the currently viewed month and any active search/filter, and labels the filter on the printout.
+5. **Refactor** — filter/sort state lifted into a new `useExpenseView` hook shared by the table and the receipt (removes duplicated filtering logic); `ExpenseTable` is now a controlled component.
+6. **Print stylesheet** — `@media print` hides the live app and reveals only the receipt (rendered via a body portal); `.no-print` utility for screen-only controls.
+
+## v1.0.0 — Initial release (2026-06-11)
+
+First working version of the Household Expense Tracker.
+
+1. **PIN login** — shared 4–8 digit household PIN, stored as a SHA‑256 hash; first‑run setup flow and lock/unlock.
+2. **Storage abstraction** — `IDataStore` interface with a browser `LocalStorageRepository` and a `GoogleSheetsRepository` stub, selected via a factory and the `VITE_STORAGE_PROVIDER` env var (swap to Google Sheets later with no UI changes).
+3. **Dynamic members** — add, rename, recolor, and remove household members (no fixed limit).
+4. **Categories** — ten built‑in defaults plus user‑added categories, each with an icon and color.
+5. **Fast inline entry** — always‑visible quick‑add bar (no modals); Enter submits and refocuses for rapid multi‑item entry.
+6. **Itemized monthly view** — searchable, filterable (by category/member), click‑to‑sort table with a live filtered total.
+7. **Inline edit & delete** — edit a row in place; delete asks for confirmation.
+8. **Summary panel** — month total, top category, and breakdown bars by category and by member.
+9. **Month navigation** — prev/next stepper, "jump to this month", and a dropdown of months that have data.
+10. **CSV records** — export to CSV (resolves ids to readable names, RFC‑4180 quoting) and import from CSV (auto‑creates unknown members/categories, skips malformed rows).
+11. **Responsive, accessible UI** — large text, high contrast, and layouts that adapt from phone to desktop, aimed at all ages.
+12. **Configuration via env vars** — currency, locale, app name, and storage provider read centrally in `config.ts`.
+13. **Unit tests** — Vitest coverage for money parsing, date/month math, CSV round‑trip + malformed handling, and the selector/aggregation logic (`[Theory]`‑style `it.each` cases).
+14. **Documentation** — README with use case, project structure, run/build instructions, and manual server deployment guides (static host, Nginx, Apache).
