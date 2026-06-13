@@ -75,12 +75,36 @@ export function SplitEditor({ members, total, value, onChange }: Props) {
     );
   };
 
+  // Quick action: share this item evenly across everyone. Selects all members
+  // (in their listed order) and forces "even" mode so shares auto-balance.
+  const selectAll = () => {
+    setSelected(members.map((m) => m.id));
+    setMode("even");
+  };
+  const clearAll = () => setSelected([]);
+  const allSelected = selected.length === members.length && members.length > 0;
+
   const assigned = splits ? sumAmounts(splits.map((s) => s.amount)) : 0;
   const remaining = Math.round((total - assigned) * 100) / 100;
   const balanced = Math.abs(remaining) < 0.005;
 
   return (
     <div className="split-editor">
+      <div className="split-actions">
+        <span className="split-actions-label">Share with</span>
+        <button
+          type="button"
+          className={`btn btn-sm ${allSelected ? "btn-secondary" : "btn-ghost"}`}
+          onClick={selectAll}
+        >
+          Everyone (even)
+        </button>
+        {selected.length > 0 && (
+          <button type="button" className="btn btn-sm btn-ghost" onClick={clearAll}>
+            Clear
+          </button>
+        )}
+      </div>
       <div className="split-members">
         {members.map((m) => {
           const i = selected.indexOf(m.id);

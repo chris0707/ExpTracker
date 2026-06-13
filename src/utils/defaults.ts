@@ -23,6 +23,12 @@ export function defaultCategories(): Category[] {
     { name: "Education", color: "#4338ca", icon: "📚" },
     { name: "Entertainment", color: "#7c3aed", icon: "🎬" },
     { name: "Household", color: "#b45309", icon: "🧺" },
+    { name: "Costco", color: "#1d4ed8", icon: "🏬" },
+    { name: "Walmart", color: "#0891b2", icon: "🏪" },
+    { name: "NoFrills", color: "#65a30d", icon: "🥬" },
+    { name: "Dollarama", color: "#be123c", icon: "🏷️" },
+    { name: "Amazon", color: "#c2410c", icon: "🛍️" },
+    { name: "UberEats", color: "#db2777", icon: "🍔" },
     { name: "Other", color: "#0f766e", icon: "📦" },
   ];
   return seed.map((c) => ({ ...c, id: newId("cat"), isDefault: true }));

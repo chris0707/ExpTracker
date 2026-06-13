@@ -170,6 +170,8 @@ input, select { font-family: inherit; font-size: 1rem; }
   border-radius: 10px;
   background: #f8fffe;
 }
+.split-actions { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.split-actions-label { font-size: 0.85rem; font-weight: 600; color: var(--teal-dark); }
 .split-members { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .split-member {
   display: inline-flex; align-items: center; gap: 0.4rem;
@@ -299,6 +301,8 @@ input, select { font-family: inherit; font-size: 1rem; }
 .toolbar-left { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .copy-month-btn { white-space: nowrap; }
 .print-controls { display: flex; align-items: center; gap: 0.75rem; }
+.print-groupby { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; }
+.print-groupby-select { width: auto; }
 
 /* ---------- Copied-from-last-month review ---------- */
 .migrate-banner {
@@ -368,6 +372,9 @@ input, select { font-family: inherit; font-size: 1rem; }
 .rcpt-line-amt { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rcpt-item { margin-bottom: 4px; }
 .rcpt-item-sub { font-size: 10px; color: #444; padding-left: 2mm; }
+.rcpt-group { margin-bottom: 6px; }
+.rcpt-group-head { font-weight: 800; border-bottom: 1px dotted #000; margin-bottom: 3px; }
+.rcpt-group .rcpt-item { padding-left: 2mm; }
 .rcpt-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; }
 .rcpt-thanks { margin-top: 6px; font-size: 11px; }
 .rcpt-barcode { font-family: "Courier New", monospace; letter-spacing: -1px; font-size: 18px; margin: 4px 0; }
