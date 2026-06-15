@@ -12,7 +12,14 @@ import { SplitEditor } from "./SplitEditor";
  * An item can be split across several members - see the Split toggle in edit
  * mode and the per-member shares shown in the Member column.
  */
-export function ExpenseRow({ expense }: { expense: Expense }) {
+export function ExpenseRow({
+  expense,
+  expandSplits = false,
+}: {
+  expense: Expense;
+  /** When false, splits across 3+ members collapse to a hoverable `Split[n]` badge. */
+  expandSplits?: boolean;
+}) {
   const { data, updateExpense, removeExpense, keepMigratedExpense } = useAppData();
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -177,16 +184,39 @@ export function ExpenseRow({ expense }: { expense: Expense }) {
       </td>
       <td>
         {isSplit(expense) ? (
-          <div className="split-chips">
-            <span className="tag-split" title="Split across members">Split</span>
-            {memberShares(expense).map((s) => (
-              <span className="split-chip" key={s.memberId}>
-                <span className="member-dot" style={{ backgroundColor: memberColor(s.memberId) }} aria-hidden="true" />
-                {memberName(s.memberId)}
-                <span className="split-chip-amt">{formatMoney(s.amount)}</span>
+          !expandSplits && memberShares(expense).length > 2 ? (
+            <div className="split-chips">
+              <span
+                className="split-collapsed"
+                tabIndex={0}
+                title={memberShares(expense)
+                  .map((s) => `${memberName(s.memberId)} ${formatMoney(s.amount)}`)
+                  .join(", ")}
+              >
+                Split[{memberShares(expense).length}]
+                <span className="split-popover" role="tooltip">
+                  {memberShares(expense).map((s) => (
+                    <span className="split-popover-row" key={s.memberId}>
+                      <span className="member-dot" style={{ backgroundColor: memberColor(s.memberId) }} aria-hidden="true" />
+                      {memberName(s.memberId)}
+                      <span className="split-chip-amt">{formatMoney(s.amount)}</span>
+                    </span>
+                  ))}
+                </span>
               </span>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="split-chips">
+              <span className="tag-split" title="Split across members">Split</span>
+              {memberShares(expense).map((s) => (
+                <span className="split-chip" key={s.memberId}>
+                  <span className="member-dot" style={{ backgroundColor: memberColor(s.memberId) }} aria-hidden="true" />
+                  {memberName(s.memberId)}
+                  <span className="split-chip-amt">{formatMoney(s.amount)}</span>
+                </span>
+              ))}
+            </div>
+          )
         ) : (
           <>
             <span className="member-dot" style={{ backgroundColor: member?.color ?? "#94a3b8" }} aria-hidden="true" />

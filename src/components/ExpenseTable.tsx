@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useAppData } from "../context/AppDataContext";
 import type { SortField } from "../utils/selectors";
 import type { Expense } from "../models/types";
+import { isSplit, memberShares } from "../models/types";
 import type { ExpenseView } from "../hooks/useExpenseView";
 import { ExpenseRow } from "./ExpenseRow";
 import { formatMoney, sumAmounts } from "../utils/money";
@@ -29,6 +31,11 @@ export function ExpenseTable({ monthExpenses, view }: Props) {
   const { data } = useAppData();
   const { filter, setFilter, clearFilter, sortField, sortDir, toggleSort, rows, isFiltered } =
     view;
+
+  // Off by default: splits across 3+ members collapse to a hoverable `Split[n]`
+  // badge so a busy month stays compact. The Member-column toggle expands them.
+  const [expandSplits, setExpandSplits] = useState(false);
+  const hasCollapsibleSplit = rows.some((e) => isSplit(e) && memberShares(e).length > 2);
 
   const filteredTotal = sumAmounts(rows.map((r) => r.amount));
 
@@ -103,6 +110,20 @@ export function ExpenseTable({ monthExpenses, view }: Props) {
                     {sortField === col.field && (
                       <span className="sort-caret">{sortDir === "asc" ? " ▲" : " ▼"}</span>
                     )}
+                    {col.field === "member" && hasCollapsibleSplit && (
+                      <label
+                        className="checkbox split-display-toggle"
+                        onClick={(e) => e.stopPropagation()}
+                        title="Show every member's share, or collapse 3+ way splits"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={expandSplits}
+                          onChange={(e) => setExpandSplits(e.target.checked)}
+                        />
+                        Expand splits
+                      </label>
+                    )}
                   </th>
                 ))}
                 <th aria-label="Actions" />
@@ -110,7 +131,7 @@ export function ExpenseTable({ monthExpenses, view }: Props) {
             </thead>
             <tbody>
               {rows.map((e) => (
-                <ExpenseRow key={e.id} expense={e} />
+                <ExpenseRow key={e.id} expense={e} expandSplits={expandSplits} />
               ))}
             </tbody>
             <tfoot>

@@ -201,6 +201,32 @@ input, select { font-family: inherit; font-size: 1rem; }
 .tag-split { font-size: 0.7rem; background: var(--teal-soft); color: var(--teal-dark); padding: 0.1rem 0.4rem; border-radius: 6px; font-weight: 700; }
 .split-edit-row td { padding-top: 0; }
 
+/* Collapsed 3+ way split: a compact `Split[n]` badge that reveals the per-member
+   shares on hover/focus (native `title` is the always-available fallback). */
+.split-collapsed {
+  position: relative; cursor: default;
+  font-size: 0.72rem; background: var(--teal-soft); color: var(--teal-dark);
+  padding: 0.1rem 0.45rem; border-radius: 6px; font-weight: 700;
+}
+.split-popover {
+  display: none; position: absolute; top: 100%; left: 0; z-index: 30;
+  margin-top: 4px; padding: 0.4rem 0.55rem; min-width: 170px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+.split-collapsed:hover .split-popover,
+.split-collapsed:focus-within .split-popover { display: block; }
+.split-popover-row {
+  display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+  font-size: 0.82rem; font-weight: 500; color: var(--ink); padding: 0.12rem 0;
+}
+.split-popover-row .member-dot { margin-right: 0; }
+.split-popover-row .split-chip-amt { margin-left: auto; }
+
+/* Member-column header toggle to expand/collapse all splits. */
+.split-display-toggle { font-size: 0.72rem; font-weight: 600; margin-left: 0.5rem; }
+.split-display-toggle input { width: 14px; height: 14px; }
+
 /* ---------- Month nav ---------- */
 .month-nav {
   display: flex; align-items: center; gap: 0.75rem;
