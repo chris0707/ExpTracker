@@ -171,10 +171,7 @@ export function ReceiptDocument({
                       return (
                         <div className="rcpt-item" key={e.id}>
                           <div className="rcpt-line">
-                            <span className="rcpt-line-name">
-                              {e.description}
-                              {split ? ` (split[${splitCount}])` : ""}
-                            </span>
+                            <span className="rcpt-line-name">{e.description}</span>
                             <span className="rcpt-dots" />
                             <span className="rcpt-line-amt">{formatMoney(share)}</span>
                           </div>

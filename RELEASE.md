@@ -1,5 +1,11 @@
 # Release Notes
 
+## v1.1.1 — Receipt & split-row tweaks (2026-06-15)
+
+1. **Cleaner grouped item titles** — in the receipt's "ITEMS BY MEMBER" view, split items no longer repeat the `(split[N])` tag in the item title (e.g. "Wild rice" instead of "Wild rice (split[2])"); the split detail remains on the sub-line (`· split[N] · full $X.XX`).
+2. **Collapsed splits in the item list** — on the home/items list, a split across 3+ members now collapses to a compact `Split[n]` badge instead of a tall stack of member chips; hovering (or focusing) the badge reveals each member and their share. Two-way splits still show inline.
+3. **Expand-splits toggle** — the Member column header shows an "Expand splits" checkbox (only when the current view has a 3+ way split) to expand every member's share or collapse back to the `Split[n]` badge.
+
 ## v1.1.0 — Printable receipt (2026-06-11)
 
 1. **Print / Save-as-PDF receipt** — new "🧾 Print / Save PDF" button opens the browser's native print dialog (print on paper or choose "Save as PDF"); no extra dependencies.
