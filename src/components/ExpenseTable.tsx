@@ -126,7 +126,7 @@ export function ExpenseTable({ monthExpenses, view }: Props) {
                     )}
                   </th>
                 ))}
-                <th aria-label="Actions" />
+                <th className="col-actions" aria-label="Actions" />
               </tr>
             </thead>
             <tbody>
@@ -140,7 +140,7 @@ export function ExpenseTable({ monthExpenses, view }: Props) {
                   {isFiltered ? `${rows.length} item(s) shown` : `${rows.length} item(s)`}
                 </td>
                 <td className="num foot-total">{formatMoney(filteredTotal)}</td>
-                <td />
+                <td className="col-actions" />
               </tr>
             </tfoot>
           </table>

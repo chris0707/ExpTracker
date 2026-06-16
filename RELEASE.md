@@ -5,6 +5,8 @@
 1. **Cleaner grouped item titles** — in the receipt's "ITEMS BY MEMBER" view, split items no longer repeat the `(split[N])` tag in the item title (e.g. "Wild rice" instead of "Wild rice (split[2])"); the split detail remains on the sub-line (`· split[N] · full $X.XX`).
 2. **Collapsed splits in the item list** — on the home/items list, a split across 3+ members now collapses to a compact `Split[n]` badge instead of a tall stack of member chips; hovering (or focusing) the badge reveals each member and their share. Two-way splits still show inline.
 3. **Expand-splits toggle** — the Member column header shows an "Expand splits" checkbox (only when the current view has a 3+ way split) to expand every member's share or collapse back to the `Split[n]` badge.
+4. **Sticky Actions column** — the Date…Amount columns can be wider than the viewport while editing a row (extra split controls); the Actions column (Save/Cancel, edit/delete) is now pinned to the right edge so it stays clickable without scrolling sideways or down to the bottom horizontal scrollbar.
+5. **Notes on quick-add** — the inline "quick add" bar now has an optional notes field. Notes already flowed through CSV export/import and the printed receipt; this completes the loop so notes can be captured at entry time, not just via Edit.
 
 ## v1.1.0 — Printable receipt (2026-06-11)
 

@@ -157,6 +157,7 @@ input, select { font-family: inherit; font-size: 1rem; }
 .entry-bar input:focus, .entry-bar select:focus { outline: none; border-color: var(--teal); }
 .entry-amount { text-align: right; font-variant-numeric: tabular-nums; }
 .entry-add { white-space: nowrap; }
+.entry-notes { margin-top: 0.6rem; font-size: 0.9rem; }
 .entry-error { color: var(--danger); margin: 0.5rem 0 0; font-weight: 600; }
 .entry-split-placeholder { display: flex; align-items: center; color: var(--ink-soft); background: #f8fafc; font-size: 0.9rem; }
 .entry-split-bar { margin-top: 0.6rem; }
@@ -263,7 +264,24 @@ input, select { font-family: inherit; font-size: 1rem; }
 .chip { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
 .member-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.45rem; vertical-align: middle; }
 .row-actions { white-space: nowrap; text-align: right; }
+
+/* Pin the Actions column to the right edge so Save/Cancel (and the edit/delete
+   icons) stay reachable when an edited row is wider than the viewport - no need
+   to scroll sideways or hunt for the bottom horizontal scrollbar to confirm.
+   Each context sets its own background so content scrolling underneath is hidden. */
+.expense-table th.col-actions,
+.expense-table td.row-actions,
+.expense-table tfoot td.col-actions {
+  position: sticky; right: 0; z-index: 2;
+  box-shadow: -8px 0 8px -8px rgba(15, 23, 42, 0.18);
+}
+.expense-table th.col-actions { background: #f8fafc; }
+.expense-table td.row-actions { background: var(--card); }
+.expense-table tbody tr:hover td.row-actions { background: #f8fafc; }
+.expense-table tfoot td.col-actions { background: #f8fafc; }
+
 .row-editing td { background: var(--teal-soft); }
+.row-editing td.row-actions { background: var(--teal-soft); }
 .row-editing input, .row-editing select { width: 100%; padding: 0.4rem; border: 1px solid var(--teal); border-radius: 8px; margin-bottom: 0.25rem; }
 .row-notes-input { font-size: 0.85rem; }
 .row-amount-input { text-align: right; }
@@ -357,6 +375,8 @@ input, select { font-family: inherit; font-size: 1rem; }
 
 .row-migrated { background: var(--amber-soft); }
 .row-migrated:hover { background: #fdebb0 !important; }
+.expense-table tr.row-migrated td.row-actions { background: var(--amber-soft); }
+.expense-table tr.row-migrated:hover td.row-actions { background: #fdebb0; }
 .migrated-badge {
   display: inline-block; margin-top: 0.2rem;
   font-size: 0.78rem; font-weight: 700; color: var(--amber);

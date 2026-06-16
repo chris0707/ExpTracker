@@ -17,6 +17,7 @@ import { SplitEditor } from "./SplitEditor";
 export function ExpenseEntryRow({ defaultDate }: { defaultDate?: string }) {
   const { data, addExpense } = useAppData();
   const [description, setDescription] = useState("");
+  const [notes, setNotes] = useState("");
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState(data.categories[0]?.id ?? "");
   const [memberId, setMemberId] = useState(data.members[0]?.id ?? "");
@@ -53,11 +54,12 @@ export function ExpenseEntryRow({ defaultDate }: { defaultDate?: string }) {
       categoryId: categoryId || data.categories[0].id,
       memberId: useSplit ? splits[0].memberId : memberId || data.members[0].id,
       amount: value,
-      notes: "",
+      notes: notes.trim(),
       splits: useSplit ? splits : undefined,
     });
     // Reset for the next entry, keep category/member/date for fast repeat input.
     setDescription("");
+    setNotes("");
     setAmount("");
     setSplitOn(false);
     setSplits(null);
@@ -125,6 +127,14 @@ export function ExpenseEntryRow({ defaultDate }: { defaultDate?: string }) {
           + Add
         </button>
       </div>
+
+      <input
+        className="entry-notes"
+        placeholder="Optional notes (shown on the receipt & included in CSV export)"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        aria-label="Notes (optional)"
+      />
 
       {data.members.length > 1 && (
         <div className="entry-split-bar">
